@@ -1,0 +1,12 @@
+package com.gustavoparro.confeitaria_api.repositories;
+
+import com.gustavoparro.confeitaria_api.models.AppUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface AppUserRepository extends JpaRepository<AppUser, Long> {
+
+    Optional<AppUser> findByUsername(String username);
+
+}
