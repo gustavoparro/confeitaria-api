@@ -8,6 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class TokenService {
@@ -21,9 +23,13 @@ public class TokenService {
     public String generateToken(Authentication authentication) {
         AppUser user = (AppUser) authentication.getPrincipal();
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", user.getUsername());
+        claims.put("authorities", user.getAuthorities());
+
         return Jwts.builder()
                 .setIssuer("confeitaria-api")
-                .setSubject(user.getUsername())
+                .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + Long.parseLong(expiration)))
                 .signWith(SignatureAlgorithm.HS256 , secret)
