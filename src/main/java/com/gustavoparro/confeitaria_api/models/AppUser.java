@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "app_user")
 public class AppUser implements UserDetails {
 
     @Id
@@ -35,6 +36,10 @@ public class AppUser implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "app_user_authority",
+            joinColumns = @JoinColumn(name = "app_user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_app_user_authority__app_user")),
+            inverseJoinColumns = @JoinColumn(name = "authority_id", nullable = false, foreignKey = @ForeignKey(name = "fk_app_user_authority__authority")),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"app_user_id", "authority_id"}, name = "unique_app_user_authority"))
     private List<Authority> authorities;
 
     @Override
