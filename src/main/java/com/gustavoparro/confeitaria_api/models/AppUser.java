@@ -1,6 +1,7 @@
 package com.gustavoparro.confeitaria_api.models;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -42,6 +44,10 @@ public class AppUser implements UserDetails {
             uniqueConstraints = @UniqueConstraint(columnNames = {"app_user_id", "authority_id"}, name = "unique_app_user_authority"))
     private List<Authority> authorities;
 
+    @OneToMany(mappedBy = "appUser")
+    @ToString.Exclude
+    private List<Adress> adressList;
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -71,4 +77,18 @@ public class AppUser implements UserDetails {
     private void onUpdate() {
         setPassword(new BCryptPasswordEncoder().encode(getPassword()));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        AppUser appUser = (AppUser) o;
+        return id != null && Objects.equals(id, appUser.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
 }

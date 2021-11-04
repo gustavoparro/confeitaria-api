@@ -16,7 +16,7 @@ public class ConfeitariaApiApplication {
 
     @Bean
     CommandLineRunner run(AppUserRepository repository) {
-        return args -> repository.save(new AppUser(null, "Gustavo Parro", "gustavo@gmail.com", "123456", null));
+        return args -> repository.save(new AppUser(null, "Gustavo Parro", "gustavo@gmail.com", "123456", null, null));
     }
 
 }

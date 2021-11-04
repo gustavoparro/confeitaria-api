@@ -1,9 +1,7 @@
 package com.gustavoparro.confeitaria_api.models;
 
-
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,27 +13,44 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "authority")
-public class Authority implements GrantedAuthority {
+@Table(name = "adress")
+public class Adress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    private String drescription;
+    @Column(name = "zip_code")
+    private String zipCode;
 
-    @Override
-    public String getAuthority() {
-        return this.drescription;
-    }
+    @NotBlank
+    private String avenue;
+
+    @NotBlank
+    private String district;
+
+    @NotBlank
+    private String number;
+
+    private String complement;
+
+    @NotBlank
+    private String city;
+
+    @NotBlank
+    private String state;
+
+    @ManyToOne
+    @JoinColumn(name = "app_user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_adress__app_user"))
+    private AppUser appUser;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Authority authority = (Authority) o;
-        return id != null && Objects.equals(id, authority.id);
+        Adress adress = (Adress) o;
+        return id != null && Objects.equals(id, adress.id);
     }
 
     @Override
